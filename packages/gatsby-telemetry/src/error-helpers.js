@@ -5,10 +5,9 @@ const cleanPaths = (str, separator = sep) => {
   const stack = process.cwd().split(separator)
 
   // Since the error is JSON.stringified the `\` is escaped so we need to take that in to account
-  if (separator === `\\`) {
-    separator = `\\\\`
-  }
-
+  //if (separator === `\\`) {
+  //  separator = `\\\\`
+  //}
   while (stack.length > 1) {
     const currentPath = stack.join(separator)
     const currentRegex = new RegExp(
@@ -16,6 +15,13 @@ const cleanPaths = (str, separator = sep) => {
       `g`
     )
     str = str.replace(currentRegex, `$SNIP`)
+
+    const currentPath2 = stack.join(separator + separator)
+    const currentRegex2 = new RegExp(
+      currentPath2.replace(/[-[/{}()*+?.\\^$|]/g, `\\$&`),
+      `g`
+    )
+    str = str.replace(currentRegex2, `$SNIP`)
     stack.pop()
   }
   return str
