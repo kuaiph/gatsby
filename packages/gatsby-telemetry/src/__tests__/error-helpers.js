@@ -54,6 +54,7 @@ describe(`Errors Helpers`, () => {
       expect(sanitizedErrorString).toEqual(
         expect.not.stringContaining(process.cwd())
       )
+      console.log(`JARMO:`, sanitizedErrorString)
     })
 
     it(`Sanitizes a section of the current path from error stacktraces`, () => {
