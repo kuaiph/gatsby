@@ -51,10 +51,10 @@ describe(`Errors Helpers`, () => {
       expect(sanitizedErrorString).toEqual(
         expect.stringContaining(errormessage)
       )
-      expect(sanitizedErrorString).toEqual(
-        expect.not.stringContaining(process.cwd())
-      )
       console.log(`JARMO:`, sanitizedErrorString)
+      expect(sanitizedErrorString).toEqual(
+        expect.not.stringContaining(process.cwd().replace(`\\`, `\\\\`))
+      )
     })
 
     it(`Sanitizes a section of the current path from error stacktraces`, () => {
@@ -130,7 +130,9 @@ describe(`Errors Helpers`, () => {
           .spyOn(process, `cwd`)
           .mockImplementation(() => cwdMockPath)
 
-        const errormessage = `This path ${fullPath} is a test ${fullPath}`
+        const errormessage = JSON.stringify(
+          `This path ${fullPath} is a test ${fullPath}`
+        )
 
         expect(cleanPaths(errormessage, `\\`)).toBe(
           `This path $SNIP\\${filePath} is a test $SNIP\\${filePath}`
